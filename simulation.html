@@ -2,30 +2,39 @@
 <html>
 
     <head>
-    <link rel="stylesheet" href="simulation-style.css">
-    <title>IEEE Decimal-128 Converter</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="simulation-style.css">
+
+        <title>IEEE-754 Decimal-128 Floating-point Converter</title>
     </head>
-    
+
     <body>
 
-    <h1>IEEE Decimal-128 Converter</h1>
-    <p>This page allows you to convert decimal floating point values to Decimal-128 represetation.</p>
+    <header>
+        <h1>IEEE-754 Decimal-128 Floating-point Converter</h1>
+    </header>
 
-    <div class="input">
-            <form action="simulation" method="post">
+    <div class="content">
+        <p>This page allows you to convert decimal floating point values to Decimal-128 represetation.</p>
 
-                <div id="significand">
-                    <label for="constant">Enter Number</label>
-                    <input type="number" id="constant">
-                </div>
+        <div class="input">
+            <div class="decimal-value">
+                <form action="simulation" method="post">
 
-                <div id="base">x 10</div>
+                    <div id="significand">
+                        <label for="constant">Enter Number</label><br>
+                        <input type="number" id="constant">
+                    </div>
 
-                <div id="exponent">
-                    <label for="exp">Enter Exponent</label>
-                    <input type="number" id="exp">
-                </div>
+                    <div id="base">x 10</div>
 
+                    <div id="exponent">
+                        <label for="exp">Enter Exponent</label><br>
+                        <input type="number" id="exp">
+                    </div>
+                </form>
+            </div>
                 <div id="round">
                     <label for="rounding-method">Choose a rounding method:</label>
                     <select id="rounding-method">
@@ -36,34 +45,46 @@
                     </select>
                 </div>
 
-                <button type="button" id="conv-btn" onclick="">Convert</button>
-            </form>
+                <div class="input-btn">
+                    <button type="button" id="conv-btn" onclick="">Convert</button>
+                    <button type="button" id="reset-btn" onclick="">Reset</button>
+                </div>
+        </div>
+
+        <div class="answer">
+            <div id="bin-ans">
+                <h3>Result in Binary</h5>
+
+                <table id="bin-breakdown">
+                    <tr>
+                        <th>Sign</th>
+                        <th>Combination field</th>
+                        <th>Exponent continuation</th>
+                        <th>Coefficient continuation</th>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>00 000</td>
+                        <td>0000 0000 0000</td>
+                        <td>0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div id="hex-ans">
+                <h3>Result in Hexadecimal</h5>
+                <div id="hex-final">
+                    0x
+                    <span>00000000 00000000 00000000 00000000</span>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="save-btn" onclick="">Save</button>
     </div>
 
-    <div class="answer">
-        <div id="bin-ans">
-            <h3>Answer in Binary</h5>
-
-            <table id="bin-breakdown">
-                <tr>
-                    <th>Sign</th>
-                    <th>Combination field</th>
-                    <th>Exponent continuation</th>
-                    <th>Coefficient continuation</th>
-                </tr>
-                <tr>
-                    <td>0</td>
-                    <td>00 000</td>
-                    <td>0000 0000 0000</td>
-                    <td>0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000</td>
-                </tr>
-            </table>
-
-        </div>
-        <div id="hex-ans">
-            <h3>Answer in Hexadecimal</h5>
-        </div>
-    </div>
-
+    <footer>
+        <p>Created by: Austria, Bongon, Dy, Estrera, Jumilla</p>
+    </footer>
+    
     </body>
 </html>
