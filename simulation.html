@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+    <link rel="stylesheet" href="simulation-style.css">
+    <title>IEEE Decimal-128 Converter</title>
+    </head>
+    
+    <body>
+
+    <h1>IEEE Decimal-128 Converter</h1>
+    <p>This page allows you to convert decimal floating point values to Decimal-128 represetation.</p>
+
+    <div class="input">
+            <form action="simulation" method="post">
+
+                <div id="significand">
+                    <label for="constant">Enter Number</label>
+                    <input type="number" id="constant">
+                </div>
+
+                <div id="base">x 10</div>
+
+                <div id="exponent">
+                    <label for="exp">Enter Exponent</label>
+                    <input type="number" id="exp">
+                </div>
+
+                <div id="round">
+                    <label for="rounding-method">Choose a rounding method:</label>
+                    <select id="rounding-method">
+                        <option value="truncate">Truncate</option>
+                        <option value="round-up">Round up</option>
+                        <option value="round-down">Round down</option>
+                        <option value="round-even">Round to nearest (ties to even)</option>
+                    </select>
+                </div>
+
+                <button type="button" id="conv-btn" onclick="">Convert</button>
+            </form>
+    </div>
+
+    <div class="answer">
+        <div id="bin-ans">
+            <h3>Answer in Binary</h5>
+
+            <table id="bin-breakdown">
+                <tr>
+                    <th>Sign</th>
+                    <th>Combination field</th>
+                    <th>Exponent continuation</th>
+                    <th>Coefficient continuation</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>00 000</td>
+                    <td>0000 0000 0000</td>
+                    <td>0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000</td>
+                </tr>
+            </table>
+
+        </div>
+        <div id="hex-ans">
+            <h3>Answer in Hexadecimal</h5>
+        </div>
+    </div>
+
+    </body>
+</html>
