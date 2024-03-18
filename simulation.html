@@ -247,7 +247,10 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('constant').value = '';
         document.getElementById('exp').value = '';
         document.getElementById('rounding-method').value = 'truncate';
-        document.getElementById('bin-breakdown').rows[1].cells[3].innerText = '00000000000000000000000000000000000000000000000000000000000000000000000000000000';
+        document.getElementById("sign").textContent = "0";
+        document.getElementById("combi").textContent = "00 000";
+        document.getElementById("expcont").textContent = "0000 0000 0000";
+        document.getElementById("coeffcont").textContent = "0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000";
         document.getElementById('hex-final').getElementsByTagName('span')[0].innerText = '00000000 00000000 00000000 00000000';
     });
 
