@@ -24,7 +24,7 @@
 
                     <div id="significand">
                         <label for="constant">Enter Number</label><br>
-                        <input type="text" id="constant">
+                        <input type="number" id="constant">
                     </div>
 
                     <div id="base">x 10</div>
@@ -63,10 +63,10 @@
                         <th>Coefficient continuation</th>
                     </tr>
                     <tr>
-                        <td>0</td>
-                        <td>00 000</td>
-                        <td>0000 0000 0000</td>
-                        <td>0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000</td>
+                        <td id="sign">0</td>
+                        <td id="combi">00 000</td>
+                        <td id="expcont">0000 0000 0000</td>
+                        <td id="coeffcont">0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000</td>
                     </tr>
                 </table>
 
@@ -75,7 +75,7 @@
                 <h3>Result in Hexadecimal</h5>
                 <div id="hex-final">
                     0x
-                    <span>00000000 00000000 00000000 00000000</span>
+                    <span id="hexval">00000000 00000000 00000000 00000000</span>
                 </div>
             </div>
         </div>
@@ -86,5 +86,176 @@
         <p>Created by: Austria, Bongon, Dy, Estrera, Jumilla</p>
     </footer>
     
+    <script>
+
+// Function to convert decimal to binary
+function decimalToBinary(decimal) {
+    return (decimal >>> 0).toString(2); // using ">>> 0" to treat the number as unsigned
+}
+
+//TODO
+// Function to convert decimal to densely packed BCD
+function decimalToDenselyPackedBCD(decimal) {
+    return decimalToBinary(decimal)
+}
+
+// Function to convert binary to hexadecimal
+function binaryToHex(binary) {
+    let hex = parseInt(binary, 2).toString(16); // Convert binary to hexadecimal
+    return hex.toUpperCase(); // Convert to uppercase for consistency
+}
+
+// Function to get the leftmost digit of a number
+function getLeftmostDigit(number) {
+    // Convert number to string and extract the first character
+    return parseInt(number.toString()[0]);
+}
+
+// Function to determine if a number is positive or negative
+function getSign(number) {
+    if (number >= 0) {
+        return 0; // Return 0 if positive
+    } else {
+        return 1; // Return 1 if negative
+    }
+}
+
+// Function to convert a decimal number to a 14-digit binary representation
+function decimalToBinary14(decimal) {
+    // Convert decimal to binary with 14 digits and pad with leading zeros if necessary
+    return decimal.toString(2).padStart(14, '0');
+}
+
+// Function to get the two most significant digits of a binary number
+function getTwoMostSignificantDigits(binary) {
+    // Extract the first two characters of the binary string
+    return binary.slice(0, 2);
+}
+
+function getLast12Digits(number) {
+    // Convert number to string and extract the last 12 characters
+    return number.toString().slice(-12);
+}
+
+function getLast33Digits(number) {
+    // Convert number to string and extract the last 12 characters
+    return number.slice(-33);
+}
+// Function to convert a decimal number to a 4-digit binary representation
+function decimalToBinary4(decimal) {
+    // Convert decimal to binary with 4 digits and pad with leading zeros if necessary
+    return decimal.toString(2).padStart(4, '0');
+}
+
+// Function to insert a space every 4 digits in a number
+function insertSpaceEvery4Digits(number) {
+    // Convert number to string, split into chunks of 4 characters, and join with space
+    return number.toString().match(/.{1,4}/g).join(' ');
+}
+
+function appendZeros(integer) {
+    // Convert integer to string
+    console.log(integer);
+    let result = String(integer);
+    
+    // If the length of the string is less than 33, pad with leading zeros
+    if (result.length < 33) {
+        result = '0'.repeat(33 - result.length) + result;
+        console.log(result);
+    }
+
+    return result;
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const convBtn = document.getElementById('conv-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const saveBtn = document.getElementById('save-btn');
+
+    convBtn.addEventListener('click', function () {
+        let constant1 = document.getElementById('constant').value; //use if positive
+        let constant2 = constant1*-1 //use if negative
+        let exp = document.getElementById('exp').value;
+        let roundingMethod = document.getElementById('rounding-method').value;
+
+
+        console.log(`Constant: ${constant1}, Exponent: ${exp}, Rounding Method: ${roundingMethod}`);
+        //conversion logic
+
+        //sign
+        var sign = getSign(constant1);
+        console.log("sign: "+sign);
+        document.getElementById("sign").textContent = sign;
+
+        var stringcoeff = '';
+        //combi field
+        console.log("constant1: "+constant1);
+        console.log("constant2: "+constant2);
+        if(sign == 1){
+        stringcoeff = appendZeros(constant2);
+        } else {
+        stringcoeff = appendZeros(constant1)
+        }
+
+        console.log("appended coeff: "+stringcoeff);
+        console.log(typeof stringcoeff);
+        var msd = getLeftmostDigit(stringcoeff);
+        console.log("msd: "+msd);
+        var msdBin = decimalToBinary4(msd);
+        console.log("msdBin: "+msdBin);
+
+        exp = Number(exp) + 6176;
+        console.log("eprime: "+exp);
+        var expBin = decimalToBinary14(exp);
+        console.log("eprim binary: "+expBin);
+        var ab = '';
+        var cde = '';
+        var cd = '';
+        var e = '';
+        var combi = '';
+        if(msd < 8){
+            // abcde
+            ab = getTwoMostSignificantDigits(expBin);
+            cde = msdBin
+            combi = ab+' '+cde
+        } else {
+            // 11cde
+            cd = getTwoMostSignificantDigits(expBin);
+            e = msd === '8' ? 0 : msd === '9' ? 1:null;
+            combi = "11"+" "+cd+e
+        }
+        console.log("combi: "+combi);
+        document.getElementById("combi").textContent = combi;
+
+        //exponent continuation
+        var expcont = getLast12Digits(expBin)
+        console.log("expcont: "+expcont);
+        var expcontText = insertSpaceEvery4Digits(expcont)
+        document.getElementById("expcont").textContent = expcontText;
+
+        //coeff continuation
+        var coeffcont = getLast33Digits(stringcoeff);
+        console.log("coeffcont: "+coeffcont);
+        coeffcont = decimalToDenselyPackedBCD(coeffcont);
+        console.log("coeffcont in dpbcd: "+coeffcont);
+        document.getElementById("coeffcont").textContent = coeffcont;
+        
+    });
+
+    resetBtn.addEventListener('click', function () {
+        document.getElementById('constant').value = '';
+        document.getElementById('exp').value = '';
+        document.getElementById('rounding-method').value = 'truncate';
+        document.getElementById('bin-breakdown').rows[1].cells[3].innerText = '00000000000000000000000000000000000000000000000000000000000000000000000000000000';
+        document.getElementById('hex-final').getElementsByTagName('span')[0].innerText = '00000000 00000000 00000000 00000000';
+    });
+
+    saveBtn.addEventListener('click', function () {
+        // Your save logic here
+        console.log('Save button clicked');
+    });
+});
+    </script>
     </body>
 </html>
