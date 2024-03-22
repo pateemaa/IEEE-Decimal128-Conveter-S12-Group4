@@ -92,60 +92,70 @@
 function decimalToBinary(decimal) {
     return (decimal >>> 0).toString(2); // using ">>> 0" to treat the number as unsigned
 }
-function convertToPackedBCD(decimal) {
+
+// Function to convert decimal to packed BCD
+function decimalToPackedBCD(decimal) {
+    let packedBCD = [];//10-bit binary
+
+    //convert each digit to 4-bit binary
+    for (let i = 0; i < decimal.length; i++) {
+        let digit = parseInt(decimal[i]);
+        let binary = (decimalToBinary4(digit))
+        packedBCD.push(...binary);
+    }  
+    return packedBCD;
+}
+
+// Function to convert decimal to densely packed BCD
+function decimalToDenselyPackedBCD(decimal) {
     let packedBCDlist = [];
+    let list = [];//denselyPackedBCDList
 
     //grouping digits by 3
     for (let i = 0; i < decimal.length; i += 3) {
-        let group = decimal.substring(i, i + 3);//gets the 3 decimal digits
+        let decimal3 = decimal.substring(i, i + 3);//gets the 3 decimal digits
         let packedBCD = [];
 
-        //convert each digit to 4-bit binary
-        for (let j = 0; j < group.length; j++) {
-            let digit = parseInt(group[j]);
-            let binary = (decimalToBinary4(digit))
-            packedBCD.push(...binary);
-        }   
+        packedBCD = decimalToPackedBCD(decimal3)
         packedBCDlist.push(packedBCD.join(''));
     }
-    return packedBCDlist;
-}
-//TODO
-// Function to convert decimal to densely packed BCD
-function decimalToDenselyPackedBCD(decimal) {
-    //return decimalToBinary(decimal)
-    packedBCDlist = convertToPackedBCD(decimal)
 
-    let list = [];
-
-    //iterate through each group of 12 binary digits
+    //iterate through each group of 12 binary digits 
     for (let packedBCD of packedBCDlist) {
-        let a = parseInt(packedBCD[0]);
-        let e = parseInt(packedBCD[4]);
-        let i = parseInt(packedBCD[8]);
+        //a, b, c, d, e, f, g, h, i, j, k, m
+        //0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
 
-        //conditions based on values of a, e, and i
-
-        //might shorten this part pa later
+        let a = parseInt(packedBCD[0]);//11th bit
+        let e = parseInt(packedBCD[4]);//7th bit
+        let i = parseInt(packedBCD[8]);//3rd bit
+        
+        //equivalent densely packed BCD encoding
         if (a === 0 && e === 0 && i === 0) {
+            //b, c, d, f, g, h, 0, j, k, m
             list.push(packedBCD[1], packedBCD[2], packedBCD[3], packedBCD[5], packedBCD[6], packedBCD[7], '0', packedBCD[9], packedBCD[10], packedBCD[11]);
         }else if (a === 0 && e === 0 && i === 1) {
+            //b, c, d, f, g, h, 1, 0, 0, m
             list.push(packedBCD[1], packedBCD[2], packedBCD[3], packedBCD[5], packedBCD[6], packedBCD[7], '1', '0', '0', packedBCD[11]);
         }else if (a === 0 && e === 1 && i === 0) {
+            //b, c, d, j, k, h, 1, 0, 1, m
             list.push(packedBCD[1], packedBCD[2], packedBCD[3], packedBCD[9], packedBCD[10], packedBCD[7], '1', '0', '1', packedBCD[11]);
         }else if (a === 0 && e === 1 && i === 1) {
+            //b, c, d, 1, 0, h, 1, 1, 1, m
             list.push(packedBCD[1], packedBCD[2], packedBCD[3], '1', '0', packedBCD[7], '1', '1', '1', packedBCD[11]);
         }else if (a === 1 && e === 0 && i === 0) {
+            //j, k, d, f, g, h, 1, 1, 0, m
             list.push(packedBCD[9], packedBCD[10], packedBCD[3], packedBCD[5], packedBCD[6], packedBCD[7], '1', '1', '0', packedBCD[11]);
         }else if (a === 1 && e === 0 && i === 1) {
+            //f, g, d, 0, 1, h, 1, 1, 1, m
             list.push(packedBCD[5], packedBCD[6], packedBCD[3], '0', '1', packedBCD[7], '1', '1', '1', packedBCD[11]);
         }else if (a === 1 && e === 1 && i === 0) {
+            //j, k, d, 0, 0, h, 1, 1, 1, m
             list.push(packedBCD[9], packedBCD[10], packedBCD[3], '0', '0', packedBCD[7], '1', '1', '1', packedBCD[11]);
         }else if (a === 1 && e === 1 && i === 1) {
+            //0, 0, d, 1, 1, h, 1, 1, 1, m
             list.push('0', '0', packedBCD[3], '1', '1', packedBCD[7], '1', '1', '1', packedBCD[11]);
         }
     }
-
     return list.join('');
 }
 
@@ -201,6 +211,12 @@ function decimalToBinary4(decimal) {
 function insertSpaceEvery4Digits(number) {
     // Convert number to string, split into chunks of 4 characters, and join with space
     return number.toString().match(/.{1,4}/g).join(' ');
+}
+
+// Function to insert a space every 10 digits in a number
+function insertSpaceEvery10Digits(number) {
+    // Convert number to string, split into chunks of 10 characters, and join with space
+    return number.toString().match(/.{1,10}/g).join(' ');
 }
 
 function appendZeros(integer) {
@@ -289,7 +305,8 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("coeffcont: "+coeffcont);
         coeffcont = decimalToDenselyPackedBCD(coeffcont);
         console.log("coeffcont in dpbcd: "+coeffcont);
-        document.getElementById("coeffcont").textContent = coeffcont;
+        var coeffcontText = insertSpaceEvery10Digits(coeffcont)
+        document.getElementById("coeffcont").textContent = coeffcontText;
 
         //special cases (Infinity and NaN)
         if(exp > 12287){
