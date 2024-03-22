@@ -255,8 +255,19 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("coeffcont").textContent = "0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000";
             // document.getElementById('hex-final').getElementsByTagName('span')[0].innerText = '00000000 00000000 00000000 00000000';
         }
-        
-    });
+
+        //hexadecimal convert
+        let signValue = document.getElementById('sign').textContent.replace(/\s/g, '');
+        let combiValue = document.getElementById('combi').textContent.replace(/\s/g, '');
+        let expcontValue = document.getElementById('expcont').textContent.replace(/\s/g, '');
+        let coeffcontValue = document.getElementById('coeffcont').textContent.replace(/\s/g, '');
+
+        let binaryString = signValue + combiValue + expcontValue + coeffcontValue;
+        let hexNumber = binaryToHex(binaryString);
+        let groupedHexNumber = hexNumber.match(/.{1,8}/g).join(' ');
+        document.getElementById('hex-final').getElementsByTagName('span')[0].innerText = groupedHexNumber;
+
+    }); 
 
     resetBtn.addEventListener('click', function () {
         document.getElementById('constant').value = '';
