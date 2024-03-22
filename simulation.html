@@ -92,11 +92,61 @@
 function decimalToBinary(decimal) {
     return (decimal >>> 0).toString(2); // using ">>> 0" to treat the number as unsigned
 }
+function convertToPackedBCD(decimal) {
+    let packedBCDlist = [];
 
+    //grouping digits by 3
+    for (let i = 0; i < decimal.length; i += 3) {
+        let group = decimal.substring(i, i + 3);//gets the 3 decimal digits
+        let packedBCD = [];
+
+        //convert each digit to 4-bit binary
+        for (let j = 0; j < group.length; j++) {
+            let digit = parseInt(group[j]);
+            let binary = (decimalToBinary4(digit))
+            packedBCD.push(...binary);
+        }   
+        packedBCDlist.push(packedBCD.join(''));
+    }
+    return packedBCDlist;
+}
 //TODO
 // Function to convert decimal to densely packed BCD
 function decimalToDenselyPackedBCD(decimal) {
-    return decimalToBinary(decimal)
+    //return decimalToBinary(decimal)
+    packedBCDlist = convertToPackedBCD(decimal)
+
+    let list = [];
+
+    //iterate through each group of 12 binary digits
+    for (let packedBCD of packedBCDlist) {
+        let a = parseInt(packedBCD[0]);
+        let e = parseInt(packedBCD[4]);
+        let i = parseInt(packedBCD[8]);
+
+        //conditions based on values of a, e, and i
+
+        //might shorten this part pa later
+        if (a === 0 && e === 0 && i === 0) {
+            list.push(packedBCD[1], packedBCD[2], packedBCD[3], packedBCD[5], packedBCD[6], packedBCD[7], '0', packedBCD[9], packedBCD[10], packedBCD[11]);
+        }else if (a === 0 && e === 0 && i === 1) {
+            list.push(packedBCD[1], packedBCD[2], packedBCD[3], packedBCD[5], packedBCD[6], packedBCD[7], '1', '0', '0', packedBCD[11]);
+        }else if (a === 0 && e === 1 && i === 0) {
+            list.push(packedBCD[1], packedBCD[2], packedBCD[3], packedBCD[9], packedBCD[10], packedBCD[7], '1', '0', '1', packedBCD[11]);
+        }else if (a === 0 && e === 1 && i === 1) {
+            list.push(packedBCD[1], packedBCD[2], packedBCD[3], '1', '0', packedBCD[7], '1', '1', '1', packedBCD[11]);
+        }else if (a === 1 && e === 0 && i === 0) {
+            list.push(packedBCD[9], packedBCD[10], packedBCD[3], packedBCD[5], packedBCD[6], packedBCD[7], '1', '1', '0', packedBCD[11]);
+        }else if (a === 1 && e === 0 && i === 1) {
+            list.push(packedBCD[5], packedBCD[6], packedBCD[3], '0', '1', packedBCD[7], '1', '1', '1', packedBCD[11]);
+        }else if (a === 1 && e === 1 && i === 0) {
+            list.push(packedBCD[9], packedBCD[10], packedBCD[3], '0', '0', packedBCD[7], '1', '1', '1', packedBCD[11]);
+        }else if (a === 1 && e === 1 && i === 1) {
+            list.push('0', '0', packedBCD[3], '1', '1', packedBCD[7], '1', '1', '1', packedBCD[11]);
+        }
+    }
+
+    return list.join('');
 }
 
 // Function to convert binary to hexadecimal
