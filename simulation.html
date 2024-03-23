@@ -360,6 +360,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     saveBtn.addEventListener('click', function () {
         // Your save logic here
+        let signValue = document.getElementById('sign').textContent.replace(/\s/g, '');
+        let combiValue = document.getElementById('combi').textContent.replace(/\s/g, '');
+        let expcontValue = document.getElementById('expcont').textContent.replace(/\s/g, '');
+        let coeffcontValue = document.getElementById('coeffcont').textContent.replace(/\s/g, '');
+
+        let binaryString = signValue + " " + combiValue + " " + expcontValue + " " + coeffcontValue;
+
+        let groupedHexNumber = document.getElementById('hex-final').getElementsByTagName('span')[0].innerText;
+        
+        let outputText = `Binary Result: ${binaryString}\n`;
+        outputText += `Hexadecimal Result: 0x ${groupedHexNumber}`;
+
+        let blob = new Blob([outputText], {type: "text/plain"});
+        let a = document.createElement("a")
+        a.href = URL.createObjectURL(blob);
+        a.download = "results.txt";//file name
+
+        document.body.appendChild(a);
+        a.click()//click event save file
+
+        document.body.removeChild(a);
         console.log('Save button clicked');
     });
 });
