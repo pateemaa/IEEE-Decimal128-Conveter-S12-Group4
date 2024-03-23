@@ -319,19 +319,20 @@ document.addEventListener('DOMContentLoaded', function () {
         var coeffcontText = insertSpaceEvery10Digits(coeffcont)
         document.getElementById("coeffcont").textContent = coeffcontText;
 
-        //special cases (Infinity and NaN)
-        if(exp > 12287){
+        //special cases
+        //Infinity
+        if(exp > 6111){
             document.getElementById("sign").textContent = sign;
             document.getElementById("combi").textContent = "11 110";
             document.getElementById("expcont").textContent = "0000 0000 0000";
-            document.getElementById("coeffcont").textContent = "0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000";
-            // document.getElementById('hex-final').getElementsByTagName('span')[0].innerText = '00000000 00000000 00000000 00000000';
-        }else if(constant1 === ''){
+            document.getElementById("coeffcont").textContent = "0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000";
+        } 
+        //NaN
+        if(constant1 === ''){
             document.getElementById("sign").textContent = sign;
             document.getElementById("combi").textContent = "11 111";
             document.getElementById("expcont").textContent = "0000 0000 0000";
-            document.getElementById("coeffcont").textContent = "0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000";
-            // document.getElementById('hex-final').getElementsByTagName('span')[0].innerText = '00000000 00000000 00000000 00000000';
+            document.getElementById("coeffcont").textContent = coeffcontText;
         }
 
         //hexadecimal convert
@@ -354,7 +355,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("sign").textContent = "0";
         document.getElementById("combi").textContent = "00 000";
         document.getElementById("expcont").textContent = "0000 0000 0000";
-        document.getElementById("coeffcont").textContent = "0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000";
+        document.getElementById("coeffcont").textContent = "0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000";
         document.getElementById('hex-final').getElementsByTagName('span')[0].innerText = '00000000 00000000 00000000 00000000';
     });
 
