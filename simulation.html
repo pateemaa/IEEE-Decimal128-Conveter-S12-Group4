@@ -251,6 +251,57 @@ function appendZeros(integer) {
     return result;
 }
 
+function truncateAndExtract(number) {
+  // Convert the number to a string
+  const numStr = Math.abs(number).toString();
+  
+  // Extract the first 35 digits
+  const truncatedStr = numStr.substring(0, 35);
+  
+  // Convert back to a number if needed
+  // const truncatedNum = parseFloat(truncatedStr); // Uncomment this line if you want the result as a number
+  
+  return truncatedStr;
+}
+
+function countDigits(number) {
+  // Convert the number to a string
+  const numStr = Math.abs(number).toString();
+  
+  // Count the number of digits
+  return numStr.length;
+}
+
+function roundTo34Digits(number, roundingMode) {
+  // Convert the number to a string
+  const numStr = Math.abs(number).toString();
+  console.log("Rounding numner: "+numStr);
+  // Truncate to 34 digits
+  if (roundingMode === 'Truncate') {
+    return numStr.substring(0, 34);
+  }
+  
+  // Round up to 34 digits
+  if (roundingMode === 'Round up') {
+    return numStr.substring(0, 35);
+  }
+  
+  // Round down to 34 digits
+  if (roundingMode === 'Round down') {
+    return numStr.substring(0, 34);
+  }
+  
+  // Round to nearest (ties to even) to 34 digits
+  if (roundingMode === 'Round to nearest (ties to even)') {
+    // Extract the first 35 digits
+    const truncatedStr = numStr.substring(0, 35);
+    // Round to nearest (ties to even) by converting to number
+    const roundedNum = Number(parseFloat(truncatedStr));
+    // Convert back to string
+    return roundedNum.toString();
+  }
+
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     const convBtn = document.getElementById('conv-btn');
@@ -258,10 +309,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const saveBtn = document.getElementById('save-btn');
 
     convBtn.addEventListener('click', function () {
-        let constant1 = document.getElementById('constant').value; //use if positive
-        let constant2 = constant1*-1 //use if negative
+        let constant1 = Number(document.getElementById('constant').value).toFixed(0); //use if positive
         let exp = document.getElementById('exp').value;
+        let numdigits = countDigits(constant1);
         let roundingMethod = document.getElementById('rounding-method').value;
+        console.log(`Constant: ${constant1}, Exponent: ${exp}, Rounding Method: ${roundingMethod}`);
+        if(numdigits > 34){
+            numdigits = numdigits - 34;
+            exp += numdigits;
+            constant1 = Number(truncateAndExtract(constant1)).toFixed(0);
+            constant1 = Number(roundTo34Digits(constant1, roundingMethod)).toFixed(0);
+        }
+        let constant2 = constant1*-1 //use if negative
 
 
         console.log(`Constant: ${constant1}, Exponent: ${exp}, Rounding Method: ${roundingMethod}`);
@@ -274,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var stringcoeff = '';
         //combi field
-        console.log("constant1: "+constant1);
+        console.log("constant1: "+Number(constant1));
         console.log("constant2: "+constant2);
         if(sign == 1){
         stringcoeff = appendZeros(constant2);
@@ -328,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //special cases
         //Infinity
-        if(document.getElementById('exp').value > 6111){
+        if((exp-6176) > 6111){
             document.getElementById("sign").textContent = sign;
             document.getElementById("combi").textContent = "11 110";
             document.getElementById("expcont").textContent = "0000 0000 0000";
