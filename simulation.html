@@ -253,7 +253,7 @@ function appendZeros(integer) {
 
 function truncateAndExtract(number) {
   // Convert the number to a string
-  const numStr = Math.abs(number).toString();
+  const numStr = number.toString();
   
   // Extract the first 35 digits
   const truncatedStr = numStr.substring(0, 35);
@@ -266,7 +266,7 @@ function truncateAndExtract(number) {
 
 function countDigits(number) {
   // Convert the number to a string
-  const numStr = Math.abs(number).toString();
+  const numStr = number.toString();
   
   // Count the number of digits
   return numStr.length;
@@ -274,25 +274,25 @@ function countDigits(number) {
 
 function roundTo34Digits(number, roundingMode) {
   // Convert the number to a string
-  const numStr = Math.abs(number).toString();
+  const numStr = number.toString();
   console.log("Rounding numner: "+numStr);
   // Truncate to 34 digits
-  if (roundingMode === 'Truncate') {
+  if (roundingMode === 'truncate') {
     return numStr.substring(0, 34);
   }
   
   // Round up to 34 digits
-  if (roundingMode === 'Round up') {
+  if (roundingMode === 'round up') {
     return numStr.substring(0, 35);
   }
   
   // Round down to 34 digits
-  if (roundingMode === 'Round down') {
+  if (roundingMode === 'round down') {
     return numStr.substring(0, 34);
   }
   
   // Round to nearest (ties to even) to 34 digits
-  if (roundingMode === 'Round to nearest (ties to even)') {
+  if (roundingMode === 'round to nearest (ties to even)') {
     // Extract the first 35 digits
     const truncatedStr = numStr.substring(0, 35);
     // Round to nearest (ties to even) by converting to number
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const saveBtn = document.getElementById('save-btn');
 
     convBtn.addEventListener('click', function () {
-        let constant1 = Number(document.getElementById('constant').value).toFixed(0); //use if positive
+        let constant1 = BigInt(document.getElementById('constant').value)   ; //use if positive
         let exp = document.getElementById('exp').value;
         let numdigits = countDigits(constant1);
         let roundingMethod = document.getElementById('rounding-method').value;
@@ -317,11 +317,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if(numdigits > 34){
             numdigits = numdigits - 34;
             exp += numdigits;
-            constant1 = Number(truncateAndExtract(constant1)).toFixed(0);
-            constant1 = Number(roundTo34Digits(constant1, roundingMethod)).toFixed(0);
+            constant1 = BigInt(truncateAndExtract(constant1));
+            constant1 = BigInt(roundTo34Digits(constant1, roundingMethod));
         }
-        let constant2 = constant1*-1 //use if negative
-
+        let constant2 = constant1 * BigInt(-1);
 
         console.log(`Constant: ${constant1}, Exponent: ${exp}, Rounding Method: ${roundingMethod}`);
         //conversion logic
