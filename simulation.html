@@ -161,8 +161,19 @@ function decimalToDenselyPackedBCD(decimal) {
 
 // Function to convert binary to hexadecimal
 function binaryToHex(binary) {
-    let hex = parseInt(binary, 2).toString(16); // Convert binary to hexadecimal
-    return hex.toUpperCase(); // Convert to uppercase for consistency
+    const hexMap = {
+        '0000': '0', '0001': '1', '0010': '2', '0011': '3',
+        '0100': '4', '0101': '5', '0110': '6', '0111': '7',
+        '1000': '8', '1001': '9', '1010': 'A', '1011': 'B',
+        '1100': 'C', '1101': 'D', '1110': 'E', '1111': 'F'
+    };
+
+    let hex = '';
+    for (let i = binary.length - 4; i >= 0; i -= 4) {
+        let chunk = binary.slice(i, i + 4);
+        hex = hexMap[chunk] + hex;
+    }
+    return hex;
 }
 
 // Function to get the leftmost digit of a number
