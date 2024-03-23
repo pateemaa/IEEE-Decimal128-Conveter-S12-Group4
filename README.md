@@ -1,12 +1,15 @@
-CSARCH2 Simulation Project: IEEE Decimal-128 Floating point Converter
-
-S12 Group 4
-
+CSARCH2 S12 Group 04
 Members:
-AUSTRIA, Rafael Antonio
-BONGON, Janina Alexia
-DY, Fatima Kriselle
-ESTRERA, David Joshua
-JUMILLA, Sarah Ericka
+1) Austria, Rafael Antonio
+2) Bongon, Janina Alexia
+3) Dy, Fatima Kriselle
+4) Estrera, David Joshua
+5) Jumilla, Sarah Ericka
 
-Kindly download the zipped file and open the index.html file.
+Decimal-128 Floating Point Converter
+
+Instructions to Run Program:
+1) Download as zip file
+2) Extract zip file
+3) Open extracted folder
+4) Open index.html
