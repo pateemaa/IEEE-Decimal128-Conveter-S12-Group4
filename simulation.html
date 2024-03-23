@@ -212,12 +212,19 @@ function getLast33Digits(number) {
     // Convert number to string and extract the last 12 characters
     return number.slice(-33);
 }
-// Function to convert a decimal number to a 4-digit binary representation
+        
+// Function to convert a decimal number to a 3-digit binary representation
 function decimalToBinary3(decimal) {
     // Convert decimal to binary with 4 digits and pad with leading zeros if necessary
     return decimal.toString(2).padStart(3, '0');
 }
-
+        
+// Function to convert a decimal number to a 4-digit binary representation
+function decimalToBinary4(decimal) {
+    // Convert decimal to binary with 4 digits and pad with leading zeros if necessary
+    return decimal.toString(2).padStart(4, '0');
+}
+        
 // Function to insert a space every 4 digits in a number
 function insertSpaceEvery4Digits(number) {
     // Convert number to string, split into chunks of 4 characters, and join with space
@@ -279,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(typeof stringcoeff);
         var msd = getLeftmostDigit(stringcoeff);
         console.log("msd: "+msd);
-        var msdBin = decimalToBinary3(msd);
+        var msdBin = decimalToBinary4(msd);
         console.log("msdBin: "+msdBin);
 
         exp = Number(exp) + 6176;
@@ -294,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if(msd < 8){
             // abcde
             ab = getTwoMostSignificantDigits(expBin);
-            cde = msdBin
+            cde = decimalToBinary3(msd);
             combi = ab+' '+cde
         } else {
             // 11cde
