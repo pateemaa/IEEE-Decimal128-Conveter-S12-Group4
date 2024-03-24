@@ -83,7 +83,7 @@
     </div>
 
     <footer>
-        <p>Created by: Austria, Bongon, Dy, Estrera, Jumilla</p>
+        <p>Created by: Rafael Austria, Janina Bongon, Fatima Dy, David Estrera, Sarah Jumilla</p>
     </footer>
     
     <script>
@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     convBtn.addEventListener('click', function () {
         let constant1 = BigInt(document.getElementById('constant').value)   ; //use if positive
-        let exp = document.getElementById('exp').value;
+        let exp = Number(document.getElementById('exp').value);
         let numdigits = countDigits(constant1);
         let roundingMethod = document.getElementById('rounding-method').value;
         console.log(`Constant: ${constant1}, Exponent: ${exp}, Rounding Method: ${roundingMethod}`);
